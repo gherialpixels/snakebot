@@ -60,6 +60,11 @@ def planting(orm):
 
 	return spot
 
+
+def setup():
+	pass
+
+
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Snake")
@@ -70,7 +75,7 @@ background.fill((100, 100, 100))
 clock = pygame.time.Clock()
 
 gs = 20
-direction = [1, 0]
+
 
 s = Snake(5)
 
@@ -81,46 +86,50 @@ food_img = pygame.Surface(default_size)
 snake_img.fill((255, 255, 255))
 food_img.fill((255, 200, 50))
 
-food_pos = planting(s)
+def loop():
+	direction = [1, 0]
+	food_pos = planting(s)
+	while 1:
+		clock.tick(20)
+		for event in pygame.event.get():
+			if event.type == QUIT:
+				pygame.quit()
+				quit()
+			elif event.type == KEYDOWN:
+				if event.key == K_DOWN:
+					if direction == [0, -1]:
+						break
+					direction = [0, 1]
+				elif event.key == K_UP:
+					if direction == [0, 1]:
+						break
+					direction = [0, -1]
+				elif event.key == K_RIGHT:
+					if direction == [-1, 0]:
+						break
+					direction = [1, 0]
+				elif event.key == K_LEFT:
+					if direction == [1, 0]:
+						break
+					direction = [-1, 0]
 
-while 1:
-	clock.tick(20)
-	for event in pygame.event.get():
-		if event.type == QUIT:
+		s._update(direction)
+		if s._munch(food_pos):
+			food_pos = planting(s)
+		if s._collide():
+			print "You have failed! Score: " + str(s.score)
 			pygame.quit()
 			quit()
-		elif event.type == KEYDOWN:
-			if event.key == K_DOWN:
-				if direction == [0, -1]:
-					break
-				direction = [0, 1]
-			elif event.key == K_UP:
-				if direction == [0, 1]:
-					break
-				direction = [0, -1]
-			elif event.key == K_RIGHT:
-				if direction == [-1, 0]:
-					break
-				direction = [1, 0]
-			elif event.key == K_LEFT:
-				if direction == [1, 0]:
-					break
-				direction = [-1, 0]
-
-	s._update(direction)
-	if s._munch(food_pos):
-		food_pos = planting(s)
-	if s._collide():
-		print "You have failed! Score: " + str(s.score)
-		pygame.quit()
-		quit()
-	background.fill((100, 100, 100))
-	for i in range(len(s.tail)):
-		background.blit(snake_img, (s.tail[i][0] * gs, \
- 										s.tail[i][1] * gs))
+		background.fill((100, 100, 100))
+		for i in range(len(s.tail)):
+			background.blit(snake_img, (s.tail[i][0] * gs, \
+	 										s.tail[i][1] * gs))
 
 
-	background.blit(food_img, (food_pos[0] * gs, food_pos[1] * gs))
+		background.blit(food_img, (food_pos[0] * gs, food_pos[1] * gs))
 
-	screen.blit(background, (0, 0))
-	pygame.display.update()
+		screen.blit(background, (0, 0))
+		pygame.display.update()
+
+
+loop()
