@@ -9,7 +9,7 @@ HEIGHT = 400
 class Snake(object):
 	def __init__(self, n):
 		self.snake_length = n
-		self.tail = [[random.randint(0, 20), random.randint(0, 20)]]
+		self.tail = [[random.randint(0, 19), random.randint(0, 19)]]
 		self.score = 0
 
 		for i in range(self.snake_length - 1):
@@ -33,12 +33,12 @@ class Snake(object):
 		self._move_head(direction)
 		self._move()
 		if self.tail[0][0] < 0:
-			self.tail[0][0] = 20
-		elif self.tail[0][0] > 20:
+			self.tail[0][0] = 19
+		elif self.tail[0][0] > 19:
 			self.tail[0][0] = 0
 		elif self.tail[0][1] < 0:
-			self.tail[0][1] = 20
-		elif self.tail[0][1] > 20:
+			self.tail[0][1] = 19
+		elif self.tail[0][1] > 19:
 			self.tail[0][1] = 0
 
 	def _munch(self, food):
