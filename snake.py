@@ -1,7 +1,9 @@
-import time, random, os, sys
+import time, random
 
 import pygame
 from pygame.locals import *
+
+import bot as bt
 
 WIDTH = 400
 HEIGHT = 400
